@@ -64,6 +64,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -77,6 +78,39 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="img\BACK.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="img\END.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="img\JUMP.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="img\LABEL.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="img\REPEAT 3.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="img\REPEAT 5.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="img\RETURN.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="img\START.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="img\STRAIGHT.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="img\TWIST L.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="img\TWIST R.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -19,7 +19,7 @@ namespace ProroboQR
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-
+            Initial();
         }
 
         private void programTextBox_TextChanged(object sender, EventArgs e)
@@ -27,34 +27,187 @@ namespace ProroboQR
             //もし、文字末尾が\nだったら、反映する。
             if (programTextBox.Text.Length > 0)
             {
-                if (programTextBox.Text.Substring(programTextBox.Text.Length - 1,1) == "\n")
+                if (programTextBox.Text.Substring(programTextBox.Text.Length - 1, 1) == "\n")
                 {
+                    if (programTextBox.Text.Contains("!CLEAR"))
+                    {
+                        Initial();
+                        return;
+                    }
+                    else if (programTextBox.Text.Contains("!TRANSFER"))
+                    {
+                        //yet
+                        //do not make it loop
+                    }
                     var commmandsList = new List<string>();
                     commmandsList.AddRange(programTextBox.Text.Split('\n'));
-
+                    ChangeCards(commmandsList);
+                    programTextBox.Select(programTextBox.Text.Length,0);
                 }
             }
-            else
-            {
-                //初期化処理
-            }
+            
         }
 
         private void Initial()
         {
-            programTextBox.Text = "M = " + moveTimeNumericUpDown.Value + "\nT = " + twistTimeNumericUpDown.Value + "\n";
-            programTextBox.Text += "START_UNSAFE\n";
+            programTextBox.Text = "START_UNSAFE\n";
+            programTextBox.Text += "M = " + moveTimeNumericUpDown.Value + "\n";
+            programTextBox.Text += "T = " + twistTimeNumericUpDown.Value + "\n";
         }
 
         private void ChangeCards(List<string> commandsList)
         {
-            var i = 0;
-            foreach(string s in commandsList)
+            var cards = new List<PictureBox> { cardPictureBox0, cardPictureBox1 ,cardPictureBox2,
+                                                cardPictureBox3, cardPictureBox4, cardPictureBox5,
+                                                cardPictureBox6, cardPictureBox7};
+            foreach(PictureBox p in cards)
             {
-                if (s == "START_UNSAFE")
+                p.Image = null;
+            }
+            var i = 0;
+            var isLabeled = false;
+            var isStarted = false;
+            var isJumped = false;
+            var isFinished = false;
+            var repeatCount = 0;
+            var newCommandsList = new List<string>();
+            foreach (string s in commandsList)
+            {
+                if (s.Contains("START"))
                 {
-                   
+                    if (isStarted)
+                    {
+                        //すでにSTART検知->無効
+                        i--;
+                    }
+                    else
+                    {
+                        cards[i].Image = ProroboQR.Properties.Resources.START;
+                        newCommandsList.Add(s);
+                        isStarted = true;
+                    }
                 }
+                else if (s.Contains("STRAIGHT"))
+                {
+                    cards[i].Image = ProroboQR.Properties.Resources.STRAIGHT;
+                    newCommandsList.Add(s);
+                }
+                else if (s.Contains("BACK"))
+                {
+                    cards[i].Image = ProroboQR.Properties.Resources.BACK;
+                    newCommandsList.Add(s);
+                }
+                else if (s.Contains("TWIST R"))
+                {
+                    cards[i].Image = ProroboQR.Properties.Resources.TWIST_R;
+                    newCommandsList.Add(s);
+                }
+                else if (s.Contains("TWIST L"))
+                {
+                    cards[i].Image = ProroboQR.Properties.Resources.TWIST_L;
+                    newCommandsList.Add(s);
+                }
+                else if (s.Contains("FINISH"))
+                {
+                    cards[i].Image = ProroboQR.Properties.Resources.END;
+                    newCommandsList.Add(s);
+                    isFinished = true;
+                }
+                else if (s.Contains("LABEL"))
+                {
+                    if (isLabeled)
+                    {
+                        //すでにLABEL検知->無効
+                        i--;
+                    }
+                    else
+                    {
+                        cards[i].Image = ProroboQR.Properties.Resources.LABEL;
+                        newCommandsList.Add(s);
+                        isLabeled = true;
+                    }
+                }
+                else if (s.Contains("REPEAT 3"))
+                {
+                    repeatCount++;
+                    cards[i].Image = ProroboQR.Properties.Resources.REPEAT_3;
+                    newCommandsList.Add(s);
+                }
+                else if (s.Contains("REPEAT 5"))
+                {
+                    repeatCount++;
+                    cards[i].Image = ProroboQR.Properties.Resources.REPEAT_5;
+                    newCommandsList.Add(s);
+                }
+                else if (s.Contains("RETURN"))
+                {
+                    if (repeatCount == 0)
+                    {
+                        //REPEATされていない->無効
+                        i--;
+                    }
+                    else
+                    {
+                        cards[i].Image = ProroboQR.Properties.Resources.RETURN;
+                        newCommandsList.Add(s);
+                        repeatCount--;
+                    }
+                }
+                else if (s.Contains("JUMP"))
+                {
+                    cards[i].Image = ProroboQR.Properties.Resources.JUMP;
+                    newCommandsList.Add(s);
+                    isJumped = true;
+                }
+                else
+                {
+                    newCommandsList.Add(s);
+                    i--;
+                }
+                i++;
+                if (i > 6)
+                {
+                    //6命令以上で抜ける。
+                    break;
+                }
+            }
+            //確認
+            if (!isFinished)
+            {
+                cards[7].Image = ProroboQR.Properties.Resources.END;
+            }
+            if (isJumped && !isLabeled)
+            {
+                //ラベル未定義ジャンプ
+                Initial();
+                return;
+            }
+            if (repeatCount != 0 && i > 6)
+            {
+                //Forが終わらない
+                Initial();
+                return;
+            }
+            if (!isStarted)
+            {
+                Initial();
+                return;
+            }
+            //再構成
+            //等価かどうか
+            var e = false;
+            if (commandsList.Count == newCommandsList.Count)
+            {
+                e = commandsList.All(s => newCommandsList.Contains(s));
+            }
+            if (!e)
+            {
+                string program = "";
+                foreach (string s in newCommandsList)
+                {
+                    program += s + "\n";
+                }
+                programTextBox.Text = program;
             }
         }
     }
