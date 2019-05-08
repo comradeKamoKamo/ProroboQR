@@ -36,8 +36,7 @@ namespace ProroboQR
                     }
                     else if (programTextBox.Text.Contains("!TRANSFER"))
                     {
-                        //yet
-                        //do not make it loop
+                        transfer(programTextBox.Text);
                     }
                     var commmandsList = new List<string>();
                     commmandsList.AddRange(programTextBox.Text.Split('\n'));
@@ -46,6 +45,48 @@ namespace ProroboQR
                 }
             }
             
+        }
+
+        private async void transfer(string code)
+        {
+            int exitCode;
+            //code保存
+            //try
+            //{
+                using (var tw = new System.IO.StreamWriter(Application.StartupPath + "//temp.prbs"))
+                {
+                    tw.Write(code);
+                     tw.Close();
+                }
+            //}
+            //catch
+            //{
+              //  SetMsgLabel("コードのファイル書き込みに失敗しました。");
+               // return;
+            //}
+            //try
+            //{
+                using (var p = new System.Diagnostics.Process())
+                {
+                    p.StartInfo.FileName =  Application.StartupPath + "\\cprb\\cprb.exe";
+                    p.StartInfo.Arguments = Application.StartupPath + "\\temp.prbs /s";
+                    p.StartInfo.UseShellExecute = false;
+                    p.StartInfo.RedirectStandardOutput = true;
+                    p.StartInfo.RedirectStandardInput = false;
+                    p.StartInfo.CreateNoWindow = true;
+                    p.Start();
+                    p.WaitForExit();
+                    logTextBox.Text += p.StandardOutput.ReadToEnd();
+                    exitCode = p.ExitCode;
+                    
+                }
+            //}
+            //catch
+            //{
+
+            //}
+            programTextBox.Text = programTextBox.Text.Replace("'!TRANSFER\n", "");
+
         }
 
         private void Initial()
@@ -180,17 +221,20 @@ namespace ProroboQR
             {
                 //ラベル未定義ジャンプ
                 Initial();
+                SetMsgLabel("★がみつかりませんでした。");
                 return;
             }
             if (repeatCount != 0 && i > 6)
             {
                 //Forが終わらない
                 Initial();
+                SetMsgLabel("くりかえしのおわりがみつかりませんでした。");
                 return;
             }
             if (!isStarted)
             {
                 Initial();
+                SetMsgLabel("START命令が検知されませんでした。");
                 return;
             }
             //再構成
@@ -210,5 +254,14 @@ namespace ProroboQR
                 programTextBox.Text = program;
             }
         }
+
+        private async void SetMsgLabel(string msg)
+        {
+            msgLabel.Text = msg;
+            logTextBox.Text += msg + "\n";
+            await Task.Delay(3000);
+            msgLabel.Text = "";
+        }
+
     }
 }

@@ -30,6 +30,7 @@
         {
             this.cardPictureBox0 = new System.Windows.Forms.PictureBox();
             this.cardsGroupBox = new System.Windows.Forms.GroupBox();
+            this.msgLabel = new System.Windows.Forms.Label();
             this.cardPictureBox7 = new System.Windows.Forms.PictureBox();
             this.cardPictureBox6 = new System.Windows.Forms.PictureBox();
             this.cardPictureBox5 = new System.Windows.Forms.PictureBox();
@@ -45,7 +46,6 @@
             this.isReConCehckBox = new System.Windows.Forms.CheckBox();
             this.logTextBox = new System.Windows.Forms.TextBox();
             this.programTextBox = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.cardPictureBox0)).BeginInit();
             this.cardsGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cardPictureBox7)).BeginInit();
@@ -73,7 +73,7 @@
             // 
             // cardsGroupBox
             // 
-            this.cardsGroupBox.Controls.Add(this.label3);
+            this.cardsGroupBox.Controls.Add(this.msgLabel);
             this.cardsGroupBox.Controls.Add(this.cardPictureBox7);
             this.cardsGroupBox.Controls.Add(this.cardPictureBox6);
             this.cardsGroupBox.Controls.Add(this.cardPictureBox5);
@@ -88,6 +88,18 @@
             this.cardsGroupBox.TabIndex = 1;
             this.cardsGroupBox.TabStop = false;
             this.cardsGroupBox.Text = "プログラム";
+            // 
+            // msgLabel
+            // 
+            this.msgLabel.AutoSize = true;
+            this.msgLabel.Font = new System.Drawing.Font("MS UI Gothic", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.msgLabel.ForeColor = System.Drawing.Color.Red;
+            this.msgLabel.Location = new System.Drawing.Point(6, 234);
+            this.msgLabel.Name = "msgLabel";
+            this.msgLabel.Size = new System.Drawing.Size(35, 48);
+            this.msgLabel.TabIndex = 5;
+            this.msgLabel.Text = " ";
+            this.msgLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // cardPictureBox7
             // 
@@ -264,15 +276,6 @@
             this.programTextBox.TabIndex = 0;
             this.programTextBox.TextChanged += new System.EventHandler(this.programTextBox_TextChanged);
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(387, 249);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(35, 12);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "label3";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -324,6 +327,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.NumericUpDown moveTimeNumericUpDown;
         private System.Windows.Forms.NumericUpDown twistTimeNumericUpDown;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label msgLabel;
     }
 }
