@@ -34,59 +34,98 @@ namespace ProroboQR
                         Initial();
                         return;
                     }
-                    else if (programTextBox.Text.Contains("!TRANSFER"))
-                    {
-                        transfer(programTextBox.Text);
-                    }
                     var commmandsList = new List<string>();
                     commmandsList.AddRange(programTextBox.Text.Split('\n'));
+                    commmandsList.RemoveAll(s => s.Length == 0);
+
+                    if (commmandsList.Last().Contains("!TRANSFER"))
+                    {
+                        if (programTextBox.Text.Contains("FINISH"))
+                        {
+                            transfer(programTextBox.Text);
+                        }
+                        else
+                        {
+                            transfer(programTextBox.Text + "\nFINISH");
+                        }
+                    }
                     ChangeCards(commmandsList);
-                    programTextBox.Select(programTextBox.Text.Length,0);
+                    programTextBox.Select(programTextBox.Text.Length, 0);
                 }
             }
-            
+
         }
 
         private async void transfer(string code)
         {
             int exitCode;
             //code保存
-            //try
-            //{
+            try
+            {
                 using (var tw = new System.IO.StreamWriter(Application.StartupPath + "//temp.prbs"))
                 {
                     tw.Write(code);
-                     tw.Close();
+                    tw.Close();
                 }
-            //}
-            //catch
-            //{
-              //  SetMsgLabel("コードのファイル書き込みに失敗しました。");
-               // return;
-            //}
-            //try
-            //{
+            }
+            catch
+            {
+                SetMsgLabel("コードのファイル書き込みに失敗しました。");
+                return;
+            }
+            try
+            {
                 using (var p = new System.Diagnostics.Process())
                 {
-                    p.StartInfo.FileName =  Application.StartupPath + "\\cprb\\cprb.exe";
+                    p.StartInfo.FileName = Application.StartupPath + "\\cprb\\cprb.exe";
                     p.StartInfo.Arguments = Application.StartupPath + "\\temp.prbs /s";
                     p.StartInfo.UseShellExecute = false;
                     p.StartInfo.RedirectStandardOutput = true;
                     p.StartInfo.RedirectStandardInput = false;
                     p.StartInfo.CreateNoWindow = true;
                     p.Start();
-                    p.WaitForExit();
+                    await Task.Run( () => p.WaitForExit());
                     logTextBox.Text += p.StandardOutput.ReadToEnd();
                     exitCode = p.ExitCode;
-                    
+                    if (exitCode == 0)
+                    {
+                        SetMsgLabel("プログラム転送成功。");
+                    }
+                    else if (exitCode == 1)
+                    {
+                        if (isReConCehckBox.Checked)
+                        {
+                            SetMsgLabel("接続失敗しました。3秒後に再接続します。");
+                            await Task.Delay(3000);
+                            if (programTextBox.Text.Contains("FINISH"))
+                            {
+                                transfer(programTextBox.Text);
+                            }
+                            else
+                            {
+                                transfer(programTextBox.Text + "\nFINISH");
+                            }
+                        }
+                        SetMsgLabel("プロロボとの接続に失敗しました。");
+                    }
+                    else if (exitCode == 2)
+                    {
+                        Initial();
+                        SetMsgLabel("スクリプトエラーが発生しました。");
+                    }
+                    else
+                    {
+                        SetMsgLabel("不明なエラーが発生しました。");
+                    }
                 }
-            //}
-            //catch
-            //{
 
-            //}
-            programTextBox.Text = programTextBox.Text.Replace("'!TRANSFER\n", "");
-
+            }
+            catch
+            {
+                SetMsgLabel("不明なエラーが発生しました。ログを確認してください。");
+            }
+            logTextBox.Select(logTextBox.Text.Length, 0);
+            logTextBox.ScrollToCaret();
         }
 
         private void Initial()
@@ -94,6 +133,8 @@ namespace ProroboQR
             programTextBox.Text = "START_UNSAFE\n";
             programTextBox.Text += "M = " + moveTimeNumericUpDown.Value + "\n";
             programTextBox.Text += "T = " + twistTimeNumericUpDown.Value + "\n";
+            programTextBox.Select(programTextBox.Text.Length, 0);
+            programTextBox.Select();
         }
 
         private void ChangeCards(List<string> commandsList)
@@ -101,7 +142,7 @@ namespace ProroboQR
             var cards = new List<PictureBox> { cardPictureBox0, cardPictureBox1 ,cardPictureBox2,
                                                 cardPictureBox3, cardPictureBox4, cardPictureBox5,
                                                 cardPictureBox6, cardPictureBox7};
-            foreach(PictureBox p in cards)
+            foreach (PictureBox p in cards)
             {
                 p.Image = null;
             }
@@ -263,5 +304,28 @@ namespace ProroboQR
             msgLabel.Text = "";
         }
 
+        private void transferMenuBtn_Click(object sender, EventArgs e)
+        {
+            if (programTextBox.Text.Contains("FINISH"))
+            {
+                transfer(programTextBox.Text);
+            }
+            else
+            {
+                transfer(programTextBox.Text + "\nFINISH");
+            }
+        }
+
+        private async void isActiveCheckTimer_Tick(object sender, EventArgs e)
+        {
+            if (!programTextBox.Focused)
+            {
+                isActiveCheckTimer.Enabled = false;
+                msgLabel.Text = "警告：TextBoxにフォーカスがありません。";
+                await Task.Delay(3000);
+                msgLabel.Text = "";
+            }
+            isActiveCheckTimer.Enabled = true;
+        }
     }
 }

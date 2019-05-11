@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.cardPictureBox0 = new System.Windows.Forms.PictureBox();
             this.cardsGroupBox = new System.Windows.Forms.GroupBox();
             this.msgLabel = new System.Windows.Forms.Label();
@@ -46,6 +47,9 @@
             this.isReConCehckBox = new System.Windows.Forms.CheckBox();
             this.logTextBox = new System.Windows.Forms.TextBox();
             this.programTextBox = new System.Windows.Forms.TextBox();
+            this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.transferMenuBtn = new System.Windows.Forms.ToolStripMenuItem();
+            this.isActiveCheckTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.cardPictureBox0)).BeginInit();
             this.cardsGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cardPictureBox7)).BeginInit();
@@ -58,6 +62,7 @@
             this.sysinfoGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.moveTimeNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.twistTimeNumericUpDown)).BeginInit();
+            this.contextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // cardPictureBox0
@@ -262,6 +267,7 @@
             this.logTextBox.Multiline = true;
             this.logTextBox.Name = "logTextBox";
             this.logTextBox.ReadOnly = true;
+            this.logTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.logTextBox.Size = new System.Drawing.Size(627, 205);
             this.logTextBox.TabIndex = 1;
             // 
@@ -276,14 +282,35 @@
             this.programTextBox.TabIndex = 0;
             this.programTextBox.TextChanged += new System.EventHandler(this.programTextBox_TextChanged);
             // 
+            // contextMenuStrip
+            // 
+            this.contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.transferMenuBtn});
+            this.contextMenuStrip.Name = "contextMenuStrip";
+            this.contextMenuStrip.Size = new System.Drawing.Size(132, 26);
+            // 
+            // transferMenuBtn
+            // 
+            this.transferMenuBtn.Name = "transferMenuBtn";
+            this.transferMenuBtn.ShortcutKeys = System.Windows.Forms.Keys.F5;
+            this.transferMenuBtn.Size = new System.Drawing.Size(131, 22);
+            this.transferMenuBtn.Text = "転送(&T)";
+            this.transferMenuBtn.Click += new System.EventHandler(this.transferMenuBtn_Click);
+            // 
+            // isActiveCheckTimer
+            // 
+            this.isActiveCheckTimer.Enabled = true;
+            this.isActiveCheckTimer.Interval = 1000;
+            this.isActiveCheckTimer.Tick += new System.EventHandler(this.isActiveCheckTimer_Tick);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(984, 661);
+            this.ContextMenuStrip = this.contextMenuStrip;
             this.Controls.Add(this.sysinfoGroupBox);
             this.Controls.Add(this.cardsGroupBox);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "MainForm";
@@ -304,6 +331,7 @@
             this.sysinfoGroupBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.moveTimeNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.twistTimeNumericUpDown)).EndInit();
+            this.contextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -328,5 +356,8 @@
         private System.Windows.Forms.NumericUpDown moveTimeNumericUpDown;
         private System.Windows.Forms.NumericUpDown twistTimeNumericUpDown;
         private System.Windows.Forms.Label msgLabel;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem transferMenuBtn;
+        private System.Windows.Forms.Timer isActiveCheckTimer;
     }
 }
