@@ -50,6 +50,8 @@
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.transferMenuBtn = new System.Windows.Forms.ToolStripMenuItem();
             this.isActiveCheckTimer = new System.Windows.Forms.Timer(this.components);
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.copyrightLabel = new System.Windows.Forms.ToolStripStatusLabel();
             ((System.ComponentModel.ISupportInitialize)(this.cardPictureBox0)).BeginInit();
             this.cardsGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cardPictureBox7)).BeginInit();
@@ -63,6 +65,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.moveTimeNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.twistTimeNumericUpDown)).BeginInit();
             this.contextMenuStrip.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // cardPictureBox0
@@ -303,12 +306,29 @@
             this.isActiveCheckTimer.Interval = 1000;
             this.isActiveCheckTimer.Tick += new System.EventHandler(this.isActiveCheckTimer_Tick);
             // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.copyrightLabel});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 639);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(984, 22);
+            this.statusStrip1.TabIndex = 3;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // copyrightLabel
+            // 
+            this.copyrightLabel.Name = "copyrightLabel";
+            this.copyrightLabel.Size = new System.Drawing.Size(108, 17);
+            this.copyrightLabel.Text = "© 2019 KamoKamo";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(984, 661);
             this.ContextMenuStrip = this.contextMenuStrip;
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.sysinfoGroupBox);
             this.Controls.Add(this.cardsGroupBox);
             this.MaximizeBox = false;
@@ -332,7 +352,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.moveTimeNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.twistTimeNumericUpDown)).EndInit();
             this.contextMenuStrip.ResumeLayout(false);
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -359,5 +382,7 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem transferMenuBtn;
         private System.Windows.Forms.Timer isActiveCheckTimer;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel copyrightLabel;
     }
 }
