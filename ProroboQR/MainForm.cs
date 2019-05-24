@@ -262,14 +262,14 @@ namespace ProroboQR
             {
                 //ラベル未定義ジャンプ
                 Initial();
-                SetMsgLabel("★がみつかりませんでした。");
+                SetMsgLabel("★が見つかりませんでした。");
                 return;
             }
             if (repeatCount != 0 && i > 6)
             {
                 //Forが終わらない
                 Initial();
-                SetMsgLabel("くりかえしのおわりがみつかりませんでした。");
+                SetMsgLabel("くりかえしの終わりが見つかりませんでした。");
                 return;
             }
             if (!isStarted)
