@@ -133,6 +133,7 @@ namespace ProroboQR
             programTextBox.Text = "START_UNSAFE\n";
             programTextBox.Text += "M = " + moveTimeNumericUpDown.Value + "\n";
             programTextBox.Text += "T = " + twistTimeNumericUpDown.Value + "\n";
+            programTextBox.Text += "BRAKE HIGH,1\n";
             programTextBox.Select(programTextBox.Text.Length, 0);
             programTextBox.Select();
         }
@@ -258,7 +259,7 @@ namespace ProroboQR
             {
                 cards[7].Image = ProroboQR.Properties.Resources.END;
             }
-            if (isJumped && !isLabeled)
+            if (isJumped && !isLabeled && (isFinished || i > 6))
             {
                 //ラベル未定義ジャンプ
                 Initial();
