@@ -46,7 +46,7 @@ namespace ProroboQR
                         }
                         else
                         {
-                            transfer(programTextBox.Text + "\nFINISH");
+                            transfer(programTextBox.Text + "\nBRAKE HIGH,1\nFINISH");
                         }
                     }
                     ChangeCards(commmandsList);
